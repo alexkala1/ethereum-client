@@ -1,12 +1,12 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-container fluid fill-height>
-        <router-view></router-view>
-      </v-container>
-    </v-main>
-    <Footer />
-  </v-app>
+	<v-app>
+		<v-main pa-0>
+			<v-container fluid fill-height>
+				<router-view></router-view>
+			</v-container>
+		</v-main>
+		<Footer />
+	</v-app>
 </template>
 
 <script>
@@ -16,11 +16,11 @@ export default {
 	name: 'App',
 
 	components: {
-		Footer,
+		Footer
 	},
 
 	data: () => ({
 		//
-	}),
+	})
 };
 </script>
