@@ -1,6 +1,6 @@
 <template>
 	<v-footer dark padless app absolute class="d-print-none">
-		<v-card flat tile class="deep-purple accent-4 white--text text-center">
+		<v-card flat tile class="primary white--text text-center">
 			<v-card-text>
 				<v-btn
 					v-for="icon in icons"
@@ -29,7 +29,7 @@
 			<v-divider></v-divider>
 
 			<v-card-text class="white--text">
-				{{ new Date().getFullYear() }} — <strong>Smartmoves</strong>
+				{{ new Date().getFullYear() }} — <strong>Kalaitzidis Alexandros</strong>
 			</v-card-text>
 		</v-card>
 	</v-footer>
@@ -38,7 +38,7 @@
 <script>
 export default {
 	data: () => ({
-		icons: ['mdi-facebook', 'mdi-twitter', 'mdi-linkedin', 'mdi-instagram'],
-	}),
+		icons: ['mdi-facebook', 'mdi-twitter', 'mdi-linkedin', 'mdi-instagram']
+	})
 };
 </script>
