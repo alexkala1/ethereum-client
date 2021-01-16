@@ -1,8 +1,8 @@
 <template>
-	<v-container>
+	<v-container fluid pa-0>
 		<v-row align="center" justify="center">
 			<v-col cols="12">
-				<v-card>
+				<v-card elevation="6">
 					<v-card-title>
 						Transactions for block {{ $route.params.id }}
 						<v-text-field
@@ -206,7 +206,7 @@ export default {
 		showOnlyContracts() {
 			if (this.contractSwitch === true) {
 				this.blockResults = this.allTransactions.filter(
-					(transaction) => transaction.input !== '0x'
+					(transaction) => transaction.isContract === 1
 				);
 			} else {
 				this.blockResults = this.allTransactions;
