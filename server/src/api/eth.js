@@ -7,7 +7,6 @@ const web3 = new Web3(process.env.INFURA_SECRET);
 router.get('/block/:block', async (req, res) => {
 	const block = await web3.eth.getBlock(req.params.block)
 
-	let codeArray = []
 	let blockTransactions = []
 	let blockTransactionHashes = block.transactions
 
@@ -23,7 +22,7 @@ router.get('/block/:block', async (req, res) => {
 
 
 	Promise.all(transactions).then(() => {
-		return res.json(blockTransactions)
+		return res.json({block, blockTransactions})
 	})
 });
 
