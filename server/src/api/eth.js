@@ -1,9 +1,15 @@
+const { response } = require('express');
 const express = require('express');
 const Web3 = require('web3');
 
 const router = express.Router();
 const web3 = new Web3(process.env.INFURA_SECRET);
 
+/**
+ * Gets the asked block and returns its information
+ * as well as its transactions. Also calculates the
+ * occasion of a transaction being a contract.
+ */
 router.get('/block/:block', async (req, res) => {
 	const block = await web3.eth.getBlock(req.params.block)
 
@@ -22,10 +28,57 @@ router.get('/block/:block', async (req, res) => {
 
 
 	Promise.all(transactions).then(() => {
-		return res.json({block, blockTransactions})
+		return res.json({ block, blockTransactions })
 	})
 });
 
+/**
+ * Gets blocks that user wants to get info and contracts
+ */
+router.get('/block/diff/:diff', async (req, res) => {
+	let blocks = []
+	let blockTransactions = []
+	let blockNumber = await web3.eth.getBlockNumber()
+
+	const allBlocks = new Promise(async function (reject, resolve) {
+		for (let i = 0; i < req.params.diff; i++) {
+			let block = await web3.eth.getBlock(blockNumber - i)
+			block.transactions.forEach(async transaction => {
+				let transactionFromBlock = await web3.eth.getTransaction(transaction)
+				let code = await web3.eth.getCode(transactionFromBlock.to)
+				if (code !== "0x")
+					transactionFromBlock.isContract = 1
+
+				blockTransactions.push(transactionFromBlock)
+			});
+
+			blocks.push(block)
+		}
+
+		if (blocks.length === req.params.diff)
+			resolve("done")
+		else
+			reject()
+	})
+
+	allBlocks.then(() => {
+		return res.json({blocks, blockTransactions})
+	})
+})
+
+/**
+ * Gets current block count
+ */
+router.get('/blockCount', async (req, res) => {
+	const blockCount = await web3.eth.getBlockNumber()
+
+	return res.json(blockCount)
+})
+
+/**
+ * Gets a transaction by its hash. If it is a contract
+ * returns the bytecode as well.
+ */
 router.get('/transaction/:id/', async (req, res) => {
 	let transaction = await web3.eth.getTransaction(req.params.id)
 	const code = await web3.eth.getCode(transaction.to)
@@ -33,9 +86,13 @@ router.get('/transaction/:id/', async (req, res) => {
 	if (code !== "0x")
 		transaction.isContract = 1
 
-	return res.json({transaction, code})
+	return res.json({ transaction, code })
 })
 
+
+/**
+ * WIP: Will decompile smart contract if exists
+ */
 router.get('/transaction/:id/decompile', async (req, res) => {
 	let transaction = await web3.eth.getTransaction(req.params.id)
 
@@ -47,6 +104,10 @@ router.get('/transaction/:id/decompile', async (req, res) => {
 	return res.json({ code, input })
 })
 
+/**
+ * WIP: after fetching ABI will return 
+ * the contract ABI as well as solidity code
+ */
 router.get('/contract/:id', async (req, res) => {
 	let contract = await new web3.eth.Contract([], req.params.id)
 
