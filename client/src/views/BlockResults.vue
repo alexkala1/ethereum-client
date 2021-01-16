@@ -13,9 +13,11 @@
 							single-line
 						></v-text-field>
 						<v-spacer></v-spacer>
-						<v-btn text @click="showOnlyContracts()"
-							>Show Only Contracts</v-btn
-						>
+						<v-switch
+							v-model="contractSwitch"
+							:label="contractSwitch ? 'Show all transactions' : 'Show only contracts'"
+							@click="showOnlyContracts()"
+						></v-switch>
 					</v-card-title>
 					<v-data-table
 						:loading="loading"
@@ -27,7 +29,7 @@
 							$router.push('/transaction/' + $route.params.id)
 						"
 						:headers="headers"
-						:items="blockResults.blockTransactions"
+						:items="blockResults"
 						:search="search"
 					>
 						<template v-slot:expanded-item="{ headers, item }">
@@ -104,15 +106,17 @@
 				</v-card>
 			</v-col>
 		</v-row>
-		<v-snackbar v-model="snackbar" color="error" top right multi-line timeout="2000">
+		<v-snackbar
+			v-model="snackbar"
+			color="error"
+			top
+			right
+			multi-line
+			timeout="2000"
+		>
 			{{ snackbarError }}
-
 			<template v-slot:action="{ attrs }">
-				<v-btn
-					text
-					v-bind="attrs"
-					@click="snackbar = false"
-				>
+				<v-btn text v-bind="attrs" @click="snackbar = false">
 					Close
 				</v-btn>
 			</template>
@@ -130,6 +134,7 @@ export default {
 		return {
 			loading: true,
 			blockResults: [],
+			allTransactions: [],
 			search: '',
 			headers: [
 				{ text: 'blockHash', value: 'blockHash' },
@@ -148,7 +153,8 @@ export default {
 				{ text: 'value', value: 'value' }
 			],
 			snackbar: false,
-			snackbarError: ''
+			snackbarError: '',
+			contractSwitch: false
 		};
 	},
 
@@ -158,6 +164,7 @@ export default {
 				const { data } = await axios.get(
 					`http://localhost:3001/api/v1/eth/block/${this.$route.params.id}`
 				);
+				this.allTransactions = data;
 				this.blockResults = data;
 				this.loading = false;
 			} catch (error) {
@@ -168,14 +175,22 @@ export default {
 		},
 
 		showOnlyContracts() {
-			this.blockResults.blockTransactions = this.blockResults.blockTransactions.filter(
-				(transaction) => transaction.input !== '0x'
-			);
+			if (this.contractSwitch === true) {
+				this.blockResults = this.allTransactions.filter(
+					(transaction) => transaction.input !== '0x'
+				);
+			} else {
+				this.blockResults = this.allTransactions;
+			}
 		}
 	},
 
 	created() {
 		this.getBlockResults();
+	},
+
+	mounted() {
+		this.showOnlyContracts();
 	}
 };
 </script>
