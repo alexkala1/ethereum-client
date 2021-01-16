@@ -46,7 +46,7 @@
 
 					<v-card flat>
 						<v-card-title
-							class="text-center display-1 font-weight-thin"
+							class="text-center display-1 font-weight-light"
 						>
 							Contract binary
 							<v-tooltip top>
