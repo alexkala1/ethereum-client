@@ -34,7 +34,7 @@ router.get('/transaction/:id/', async (req, res) => {
 	if (code !== "0x")
 		transaction.isContract = 1
 
-	return res.json(transaction)
+	return res.json({transaction, code})
 })
 
 router.get('/transaction/:id/decompile', async (req, res) => {

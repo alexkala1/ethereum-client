@@ -43,21 +43,48 @@
 							</v-col>
 						</v-row>
 					</v-card-text>
+
+					<v-card flat>
+						<v-card-title
+							class="text-center display-1 font-weight-thin"
+						>
+							Contract binary
+							<v-tooltip top>
+								<template v-slot:activator="{ on, attrs }">
+									<v-btn
+										v-on="on"
+										v-bind="attrs"
+										plain
+										icon
+										@click="copyToClipboard(contractBinary)"
+									>
+										<v-icon>mdi-content-copy</v-icon>
+									</v-btn>
+								</template>
+								<span>Copy Binary Code</span>
+							</v-tooltip>
+						</v-card-title>
+						<v-card-text>
+							{{ contractBinary }}
+						</v-card-text>
+					</v-card>
 				</v-card>
+
 				<div v-else class="text-center display-3">
-					Something went wrong.Try refreshing and if nothing happens please contact admin.
+					Something went wrong.Try refreshing and if nothing happens
+					please contact admin.
 				</div>
 			</v-col>
 		</v-row>
 		<v-snackbar
 			v-model="snackbar"
-			color="error"
+			:color="color"
 			top
 			right
 			multi-line
 			timeout="2000"
 		>
-			{{ snackbarError }}
+			{{ text }}
 			<template v-slot:action="{ attrs }">
 				<v-btn text v-bind="attrs" @click="snackbar = false">
 					Close
@@ -76,7 +103,9 @@ export default {
 			transaction: [],
 			loading: true,
 			snackbar: false,
-			snackbarError: ''
+			color: '',
+			text: '',
+			contractBinary: ''
 		};
 	},
 
@@ -87,13 +116,28 @@ export default {
 					`http://localhost:3001/api/v1/eth/transaction/${this.$route.params.id}`
 				);
 
-				this.transaction = data;
+				this.transaction = data.transaction;
+				this.contractBinary = data.code;
 				this.loading = false;
 			} catch (error) {
 				this.snackbar = true;
 				this.loading = false;
-				this.snackbarError = error;
+				this.color = 'error';
+				this.text = error;
 			}
+		},
+
+		copyToClipboard(text) {
+			const dummy = document.createElement('textarea');
+			document.body.appendChild(dummy);
+			dummy.value = text;
+			dummy.select();
+			document.execCommand('copy');
+			document.body.removeChild(dummy);
+
+			this.snackbar = true;
+			this.color = 'success';
+			this.text = 'Copied to clipboard';
 		}
 	},
 
