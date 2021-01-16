@@ -8,21 +8,16 @@ router.get('/block/:block', async (req, res) => {
 	const block = await web3.eth.getBlock(req.params.block)
 
 	let blockTransactions = []
-	let blockTransactionCodes = []
 	let blockTransactionHashes = block.transactions
-
 
 	let transactions = blockTransactionHashes.map(transaction => {
 		return web3.eth.getTransaction(transaction).then(async transaction => {
-			let transactionTo = await web3.eth.getCode(transaction.to)
-			blockTransactionCodes.push(transactionTo)
-		
 			blockTransactions.push(transaction)
 		})
 	});
 
 	Promise.all(transactions).then(() => {
-		return res.json({ blockTransactions, blockTransactionCodes })
+		return res.json(blockTransactions)
 	})
 });
 
