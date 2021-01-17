@@ -252,11 +252,8 @@ export default {
 		}
 	},
 
-	created() {
-		this.getBlockResults();
-	},
-
 	mounted() {
+		this.getBlockResults();
 		this.showOnlyContracts();
 	}
 };
