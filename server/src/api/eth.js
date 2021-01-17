@@ -43,11 +43,16 @@ router.get('/block/diff/:diff', async (req, res) => {
 	const allBlocks = new Promise(async function (reject, resolve) {
 		for (let i = 0; i < req.params.diff; i++) {
 			let block = await web3.eth.getBlock(blockNumber - i)
+
 			block.transactions.forEach(async transaction => {
 				let transactionFromBlock = await web3.eth.getTransaction(transaction)
-				let code = await web3.eth.getCode(transactionFromBlock.to)
-				if (code !== "0x")
-					transactionFromBlock.isContract = 1
+
+				if (transactionFromBlock.to !== null) {
+					let code = await web3.eth.getCode(transactionFromBlock.to)
+
+					if (code !== "0x")
+						transactionFromBlock.isContract = 1
+				}
 
 				blockTransactions.push(transactionFromBlock)
 			});
@@ -62,7 +67,7 @@ router.get('/block/diff/:diff', async (req, res) => {
 	})
 
 	allBlocks.then(() => {
-		return res.json({blocks, blockTransactions})
+		return res.json({ blocks, blockTransactions })
 	})
 })
 
