@@ -44,6 +44,40 @@
 						</v-row>
 					</v-card-text>
 
+					<v-card v-if="hasContract">
+						<v-card-title
+							class="display-2 font-weight-light justify-center"
+						>
+							Decompilation Data
+						</v-card-title>
+						<v-card-text class="py-5">
+							<v-row justify="center">
+								<v-col cols="6">
+									<h1 class="text-center py-3">Events</h1>
+									{{ contractEvents }}
+								</v-col>
+								<v-col cols="6">
+									<h1 class="text-center py-3">Functions</h1>
+									{{ contractFunctions }}
+								</v-col>
+								<v-col cols="12">
+									<h1 class="text-center py-3">
+										Full Solidity Code
+									</h1>
+									<v-textarea
+										background-color="grey lighten-2"
+										:value="decompiledContract"
+										rows="20"
+										@click="
+											copyToClipboard(decompiledContract)
+										"
+									>
+									</v-textarea>
+								</v-col>
+							</v-row>
+						</v-card-text>
+					</v-card>
+
 					<v-card flat>
 						<v-card-title
 							class="text-center display-1 font-weight-light"
@@ -105,7 +139,11 @@ export default {
 			snackbar: false,
 			color: '',
 			text: '',
-			contractBinary: ''
+			contractBinary: '',
+			hasContract: '',
+			contractEvents: '',
+			contractFunctions: '',
+			decompiledContract: ''
 		};
 	},
 
@@ -118,6 +156,19 @@ export default {
 
 				this.transaction = data.transaction;
 				this.contractBinary = data.code;
+
+				const response = await axios.get(
+					`http://localhost:3001/api/v1/eth/transaction/${data.transaction.to}/decompile`
+				);
+
+				if (response.status === 200) {
+					this.hasContract = true;
+					this.contractEvents = response.data.events;
+					this.contractFunctions = response.data.functions;
+					this.decompiledContract = response.data.decompiled;
+				}
+				console.log(response);
+
 				this.loading = false;
 			} catch (error) {
 				this.snackbar = true;

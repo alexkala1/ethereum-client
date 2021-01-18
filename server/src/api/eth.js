@@ -1,6 +1,6 @@
-const { response } = require('express');
 const express = require('express');
 const Web3 = require('web3');
+const { EVM } = require("evm");
 
 const router = express.Router();
 const web3 = new Web3(process.env.INFURA_SECRET);
@@ -96,27 +96,22 @@ router.get('/transaction/:id/', async (req, res) => {
 
 
 /**
- * WIP: Will decompile smart contract if exists
+ * Decompiles the contract and returns its code and events
  */
 router.get('/transaction/:id/decompile', async (req, res) => {
-	let transaction = await web3.eth.getTransaction(req.params.id)
+	const code = await web3.eth.getCode(req.params.id)
 
+	if (code !== "0x") {
+		const evm = new EVM(code)
+		const functions = evm.getFunctions()
+		const events = evm.getEvents()
+		const decompiled = evm.decompile()
 
-	const input = transaction.input
-	const code = await web3.eth.getCode(transaction.to)
+		return res.json({ functions, events, decompiled })
+	} else {
+		return res.json({ message: "Not a contract" })
+	}
 
-
-	return res.json({ code, input })
-})
-
-/**
- * WIP: after fetching ABI will return 
- * the contract ABI as well as solidity code
- */
-router.get('/contract/:id', async (req, res) => {
-	let contract = await new web3.eth.Contract([], req.params.id)
-
-	return res.json(contract)
 })
 
 module.exports = router;
