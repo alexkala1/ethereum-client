@@ -19,7 +19,7 @@
 				</v-card>
 			</v-col>
 			<v-col cols="12" v-else>
-				<v-card>
+				<v-card class="pa-5" flat>
 					<v-card-title>
 						Information for the last
 						{{ $route.params.diff }} blocks.
@@ -45,7 +45,11 @@
 					>
 					</v-data-table>
 				</v-card>
-				<v-card>
+				<v-btn @click="$vuetify.goTo('.transactions', 500, 300)" round light
+					>Check transactions</v-btn
+				>
+
+				<v-card class="pa-5 transactions" flat>
 					<v-card-text>
 						<v-card-title>
 							Transactions in the last
@@ -232,7 +236,6 @@ export default {
 				{ text: 'stateRoot', value: 'stateRoot' },
 				{ text: 'timestamp', value: 'timestamp' },
 				{ text: 'totalDifficulty', value: 'totalDifficulty' },
-				{ text: 'transactions', value: 'transactions' },
 				{ text: 'transactionsRoot', value: 'transactionsRoot' },
 				{ text: 'uncles', value: 'uncles' }
 			],
