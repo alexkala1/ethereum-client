@@ -44,7 +44,7 @@
 						</v-row>
 					</v-card-text>
 
-					<v-card v-if="hasContract">
+					<v-card v-if="hasContract" flat>
 						<v-card-title
 							class="display-2 font-weight-light justify-center"
 						>
@@ -80,7 +80,7 @@
 
 					<v-card flat>
 						<v-card-title
-							class="text-center display-1 font-weight-light"
+							class="text-center justify-center display-2 font-weight-light"
 						>
 							Contract binary
 							<v-tooltip top>
@@ -167,7 +167,6 @@ export default {
 					this.contractFunctions = response.data.functions;
 					this.decompiledContract = response.data.decompiled;
 				}
-				console.log(response);
 
 				this.loading = false;
 			} catch (error) {
