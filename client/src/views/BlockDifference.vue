@@ -25,7 +25,7 @@
 						{{ $route.params.diff }} blocks.
 						<v-text-field
 							class="px-2"
-							v-model="search"
+							v-model="blocksSearch"
 							append-icon="mdi-magnify"
 							label="Search"
 							single-line
@@ -40,14 +40,19 @@
 						item-key="hash"
 						:headers="blockHeaders"
 						:items="blocks"
-						:search="blockSearch"
+						:search="blocksSearch"
 						sort-by="number"
 					>
 					</v-data-table>
 				</v-card>
-				<v-btn @click="$vuetify.goTo('.transactions', 500, 300)" round light
-					>Check transactions</v-btn
-				>
+				<div class="text-center py-5">
+					<v-btn
+						@click="$vuetify.goTo('.transactions', 500, 300)"
+						rounded
+						light
+						>Check transactions</v-btn
+					>
+				</div>
 
 				<v-card class="pa-5 transactions" flat>
 					<v-card-text>
@@ -56,7 +61,7 @@
 							{{ $route.params.diff }} blocks.
 							<v-text-field
 								class="px-2"
-								v-model="search"
+								v-model="transactionsSearch"
 								append-icon="mdi-magnify"
 								label="Search"
 								single-line
@@ -76,7 +81,7 @@
 							item-key="hash"
 							:headers="transactionHeaders"
 							:items="transactions"
-							:search="transactionSearch"
+							:search="transactionsSearch"
 							sort-by="blockNumber"
 						>
 							<template v-slot:expanded-item="{ headers, item }">
@@ -248,19 +253,25 @@ export default {
 	methods: {
 		async getBlockDifference() {
 			try {
-				const { data } = await axios.get(
+				const response = await axios.get(
 					`http://localhost:3001/api/v1/eth/block/diff/${this.$route.params.diff}`
 				);
 
-				this.blocks = data.blocks;
-				this.transactions = data.blockTransactions;
-				this.allTransactions = data.blockTransactions;
-
-				console.log(data.blockTransactions, data.blocks);
+				this.blocks = response.data.blocks;
+				this.transactions = response.data.transactions;
+				this.allTransactions = response.data.transactions;
 
 				this.loading = false;
+				if (response.data.blocks.length === 0) {
+					this.snackbar = true;
+					this.snackbarColor = 'error';
+					this.snackbarMessage = 'Invalid Data input';
+					this.loading = false;
+				}
 			} catch (error) {
-				console.log(error);
+				this.snackbar = true;
+				this.snackbarColor = 'error';
+				this.snackbarMessage = error;
 
 				this.loading = false;
 			}
