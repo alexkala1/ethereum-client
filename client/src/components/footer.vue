@@ -1,29 +1,11 @@
 <template>
 	<v-footer dark padless app absolute class="d-print-none">
-		<v-card flat tile class="primary white--text text-center">
-			<v-card-text>
-				<v-btn
-					v-for="icon in icons"
-					:key="icon"
-					class="mx-4 white--text"
-					icon
-				>
-					<v-icon size="24px">
-						{{ icon }}
-					</v-icon>
-				</v-btn>
-			</v-card-text>
+		<v-card flat tile class="primary white--text text-center" width="100%">
 
-			<v-card-text class="white--text pt-0">
-				Phasellus feugiat arcu sapien, et iaculis ipsum elementum sit
-				amet. Mauris cursus commodo interdum. Praesent ut risus eget
-				metus luctus accumsan id ultrices nunc. Sed at orci sed massa
-				consectetur dignissim a sit amet dui. Duis commodo vitae velit
-				et faucibus. Morbi vehicula lacinia malesuada. Nulla placerat
-				augue vel ipsum ultrices, cursus iaculis dui sollicitudin.
-				Vestibulum eu ipsum vel diam elementum tempor vel ut orci. Orci
-				varius natoque penatibus et magnis dis parturient montes,
-				nascetur ridiculus mus.
+			<v-card-text class="white--text text-center">
+				This web application is used for academic purposes. Its purpose
+				is to draw data for research in why was a smart contract created
+				and get an overview in what kind of transactions are in a block.
 			</v-card-text>
 
 			<v-divider></v-divider>
