@@ -1,4 +1,4 @@
-# ethereum-client
+# Ethereum-Client
 
 ## About
 This is an application that runs in the browser and searches blocks and its transactions.
