@@ -14,7 +14,8 @@ When you create the account you just need to install project and copy the URL
 for HTTP in the .env file you will create later.
 
 After cloning the project open a command line with nodeJS and npm installed
-on your machine.
+on your machine. The project runs with 2 command lines one for the client folder
+and one for the server folder.
 
 ### Back-end API install
   * cd server
