@@ -37,38 +37,63 @@ router.get('/block/:block', async (req, res) => {
  */
 router.get('/block/diff/:diff', async (req, res) => {
 	let blocks = []
-	let blockTransactions = []
+	let transactions = []
 	let blockNumber = await web3.eth.getBlockNumber()
 
-	const allBlocks = new Promise(async function (reject, resolve) {
-		for (let i = 0; i < req.params.diff; i++) {
-			let block = await web3.eth.getBlock(blockNumber - i)
+	for (let i = 0; i < req.params.diff; i++) {
+		let block = await web3.eth.getBlock(blockNumber - i, true)
 
+		block.transactions.forEach(async transaction => {
+			if (transaction.to !== null) {
+				let code = await web3.eth.getCode(transaction.to)
+
+				if (code !== "0x")
+					transaction.isContract = 1
+			}
+
+			transactions.push(transaction)
+
+		})
+		delete block.transactions
+
+		blocks.push(block)
+	}
+
+	return res.json({ blocks, transactions })
+})
+
+/**
+ * Get transactions from a block to a block
+ */
+router.get('/block/distance/:from/:to', async (req, res) => {
+	let blocks = []
+	let transactions = []
+	const diff = req.params.from - req.params.to
+
+	try {
+		for (let i = 0; i < diff; i++) {
+			let block = await web3.eth.getBlock(req.params.from - i, true)
+	
 			block.transactions.forEach(async transaction => {
-				let transactionFromBlock = await web3.eth.getTransaction(transaction)
-
-				if (transactionFromBlock.to !== null) {
-					let code = await web3.eth.getCode(transactionFromBlock.to)
-
+				if (transaction.to !== null) {
+					let code = await web3.eth.getCode(transaction.to)
+	
 					if (code !== "0x")
-						transactionFromBlock.isContract = 1
+						transaction.isContract = 1
 				}
-
-				blockTransactions.push(transactionFromBlock)
-			});
-
+	
+				transactions.push(transaction)
+	
+			})
+			delete block.transactions
+	
 			blocks.push(block)
 		}
+	} catch (error) {
+		throw new Error(error)
+	}
 
-		if (blocks.length === req.params.diff)
-			resolve("done")
-		else
-			reject()
-	})
-
-	allBlocks.then(() => {
-		return res.json({ blocks, blockTransactions })
-	})
+	return res.json({ blocks, transactions })
 })
 
 /**
