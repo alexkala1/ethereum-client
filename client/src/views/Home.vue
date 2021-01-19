@@ -64,7 +64,9 @@
 										<v-btn
 											color="primary"
 											text
-											:to="'/block/difference/' + blockGap"
+											:to="
+												'/block/difference/' + blockGap
+											"
 											>Search now</v-btn
 										>
 									</v-card-actions>
@@ -91,7 +93,15 @@
 										></v-text-field>
 									</v-card-text>
 									<v-card-actions>
-										<v-btn color="primary" text
+										<v-btn
+											:to="
+												'/block/distance/' +
+												blockFrom +
+												'/' +
+												blockTo
+											"
+											color="primary"
+											text
 											>Search now</v-btn
 										>
 									</v-card-actions>
@@ -121,15 +131,11 @@ export default {
 
 	methods: {
 		async getBlockCount() {
-			try {
-				const { data } = await axios.get(
-					'http://localhost:3001/api/v1/eth/blockCount'
-				);
+			const { data } = await axios.get(
+				'http://localhost:3001/api/v1/eth/blockCount'
+			);
 
-				this.blockCount = data;
-			} catch (error) {
-				console.log(error);
-			}
+			this.blockCount = data;
 		}
 	},
 
