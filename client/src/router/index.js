@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import BlockResults from '../views/BlockResults.vue';
 import Transaction from '../views/Transaction.vue';
 import BlockDifference from '../views/BlockDifference.vue';
+import BlockFromTo from '../views/BlockFromTo.vue';
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,11 @@ const routes = [
 		path: '/block/:id',
 		name: 'Block Results',
 		component: BlockResults
+	},
+	{
+		path: '/block/distance/:from/:to',
+		name: 'Block From To',
+		component: BlockFromTo
 	}
 ];
 
