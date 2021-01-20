@@ -229,9 +229,8 @@ export default {
 				);
 
 				this.blockInformation = data.block;
-				this.allTransactions = data.blockTransactions;
-				this.blockResults = data.blockTransactions;
-				delete this.blockInformation.transactions;
+				this.allTransactions = data.transactions;
+				this.blockResults = data.transactions;
 
 				this.loading = false;
 			} catch (error) {

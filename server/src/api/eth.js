@@ -11,25 +11,22 @@ const web3 = new Web3(process.env.INFURA_SECRET);
  * occasion of a transaction being a contract.
  */
 router.get('/block/:block', async (req, res) => {
-	const block = await web3.eth.getBlock(req.params.block)
+	let block = await web3.eth.getBlock(req.params.block, true)
 
-	let blockTransactions = []
-	let blockTransactionHashes = block.transactions
-
-	let transactions = blockTransactionHashes.map(transaction => {
-		return web3.eth.getTransaction(transaction).then(async transaction => {
+	let transactions = await Promise.all(block.transactions.map(async transaction => {
+		if (transaction.to !== null) {
 			let code = await web3.eth.getCode(transaction.to)
+
 			if (code !== "0x")
 				transaction.isContract = 1
+		}
 
-			blockTransactions.push(transaction)
-		})
-	});
+		return await transaction
+	}))
 
+	delete block.transactions
 
-	Promise.all(transactions).then(() => {
-		return res.json({ block, blockTransactions })
-	})
+	return res.json({ block, transactions })
 });
 
 /**
@@ -73,20 +70,20 @@ router.get('/block/distance/:from/:to', async (req, res) => {
 	try {
 		for (let i = 0; i < diff; i++) {
 			let block = await web3.eth.getBlock(req.params.from - i, true)
-	
+
 			block.transactions.forEach(async transaction => {
 				if (transaction.to !== null) {
 					let code = await web3.eth.getCode(transaction.to)
-	
+
 					if (code !== "0x")
 						transaction.isContract = 1
 				}
-	
+
 				transactions.push(transaction)
-	
+
 			})
 			delete block.transactions
-	
+
 			blocks.push(block)
 		}
 	} catch (error) {
