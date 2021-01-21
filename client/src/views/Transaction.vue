@@ -151,14 +151,14 @@ export default {
 		async getTransaction() {
 			try {
 				const { data } = await axios.get(
-					`http://localhost:3001/api/v1/eth/transaction/${this.$route.params.id}`
+					`http://ethclient.drosatos.eu:3001/api/v1/eth/transaction/${this.$route.params.id}`
 				);
 
 				this.transaction = data.transaction;
 				this.contractBinary = data.code;
 
 				const response = await axios.get(
-					`http://localhost:3001/api/v1/eth/transaction/${data.transaction.to}/decompile`
+					`http://ethclient.drosatos.eu:3001/api/v1/eth/transaction/${data.transaction.to}/decompile`
 				);
 
 				if (response.status === 200) {

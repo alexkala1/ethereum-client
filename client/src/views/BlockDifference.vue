@@ -254,7 +254,7 @@ export default {
 		async getBlockDifference() {
 			try {
 				const response = await axios.get(
-					`http://localhost:3001/api/v1/eth/block/diff/${this.$route.params.diff}`
+					`http://ethclient.drosatos.eu:3001/api/v1/eth/block/diff/${this.$route.params.diff}`
 				);
 
 				this.blocks = response.data.blocks;
