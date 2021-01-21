@@ -155,8 +155,4 @@ export default {
 	position: absolute;
 	bottom: 0;
 }
-
-v-card__title {
-	;
-}
 </style>
