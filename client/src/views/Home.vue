@@ -1,14 +1,14 @@
 <template>
-	<v-container fill-height>
+	<v-container fill-height fluid>
 		<v-row align="center" justify="center">
-			<v-col cols="10">
+			<v-col cols="12" md="10">
 				<h1 class="pa-5 text-center">
 					Welcome to ethereum contract scanner
 				</h1>
 			</v-col>
 		</v-row>
 		<v-row align="center" justify="center">
-			<v-col cols="10">
+			<v-col cols="12" md="10">
 				<h1 class="text-center display-1 font-weight-light">
 					Search for transactions in a block
 				</h1>
@@ -32,10 +32,11 @@
 			</v-col>
 		</v-row>
 		<v-row align="center" justify="center" class="py-5">
-			<v-col cols="10">
+			<v-col cols="12" md="10">
 				<v-card color="">
 					<v-card-title
 						class="justify-center display-1 font-weight-light"
+						style="word-break: normal"
 					>
 						Or define a number of blocks you want to search
 					</v-card-title>
@@ -44,9 +45,9 @@
 							Current number of blocks is {{ blockCount }}
 						</h2>
 						<v-row>
-							<v-col cols="6">
+							<v-col cols="12" md="6">
 								<v-card height="100%" class="card-outter">
-									<v-card-title>
+									<v-card-title style="word-break: normal">
 										You can either select a number from the
 										latest block
 										<br />
@@ -72,9 +73,9 @@
 									</v-card-actions>
 								</v-card>
 							</v-col>
-							<v-col cols="6">
+							<v-col cols="12" md="6">
 								<v-card height="100%">
-									<v-card-title>
+									<v-card-title style="word-break: normal">
 										Or set a specific block count by putting
 										in the "from" - "to" section the
 										specific block range you want. (from =
@@ -153,5 +154,9 @@ export default {
 .card-actions {
 	position: absolute;
 	bottom: 0;
+}
+
+v-card__title {
+	;
 }
 </style>
