@@ -77,6 +77,14 @@
 							</v-row>
 						</v-card-text>
 					</v-card>
+					<v-card v-if="hasError">
+						<v-card-title class="justify-center">
+							There was an error
+						</v-card-title>
+						<v-card-text>
+							{{ error }}
+						</v-card-text>
+					</v-card>
 
 					<v-card flat>
 						<v-card-title
@@ -143,7 +151,9 @@ export default {
 			hasContract: '',
 			contractEvents: '',
 			contractFunctions: '',
-			decompiledContract: ''
+			decompiledContract: '',
+			hasError: false,
+			error: ''
 		};
 	},
 

@@ -133,7 +133,7 @@ router.get('/transaction/:id/decompile', async (req, res) => {
 			return res.json({ functions, events, decompiled })
 
 		} catch (error) {
-			return res.json(error)
+			return res.status(404).json(error)
 		}
 
 	} else {
