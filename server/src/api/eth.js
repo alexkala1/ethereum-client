@@ -124,12 +124,18 @@ router.get('/transaction/:id/decompile', async (req, res) => {
 	const code = await web3.eth.getCode(req.params.id)
 
 	if (code !== "0x") {
-		const evm = new EVM(code)
-		const functions = evm.getFunctions()
-		const events = evm.getEvents()
-		const decompiled = evm.decompile()
+		try {
+			const evm = new EVM(code)
+			const functions = evm.getFunctions()
+			const events = evm.getEvents()
+			const decompiled = evm.decompile()
 
-		return res.json({ functions, events, decompiled })
+			return res.json({ functions, events, decompiled })
+
+		} catch (error) {
+			return res.json(error)
+		}
+
 	} else {
 		return res.json({ message: "Not a contract" })
 	}
