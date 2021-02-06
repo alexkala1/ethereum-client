@@ -30,16 +30,25 @@
 								v-for="(value, name, index) in transaction"
 								:key="index"
 							>
-								<v-list-item two-line>
-									<v-list-item-content>
-										<v-list-item-title>
-											{{ name }}
-										</v-list-item-title>
-										<v-list-item-subtitle>
-											{{ value }}
-										</v-list-item-subtitle>
-									</v-list-item-content>
-								</v-list-item>
+								<v-tooltip top>
+									<template v-slot:activator="{ on, attrs }">
+										<v-list-item
+											two-line
+											v-on="on"
+											v-bind="attrs"
+										>
+											<v-list-item-content>
+												<v-list-item-title>
+													{{ transactionHeaders[index] }}
+												</v-list-item-title>
+												<v-list-item-subtitle>
+													{{ value }}
+												</v-list-item-subtitle>
+											</v-list-item-content>
+										</v-list-item>
+									</template>
+									<span>{{ tooltips[index] }}</span>
+								</v-tooltip>
 							</v-col>
 						</v-row>
 					</v-card-text>
@@ -153,7 +162,41 @@ export default {
 			contractFunctions: '',
 			decompiledContract: '',
 			hasError: false,
-			error: ''
+			error: '',
+			transactionHeaders: [
+				'Block Hash',
+				'Block Number',
+				'From',
+				'Gas',
+				'Gas Price',
+				'Hash',
+				'Input',
+				'Nonce',
+				'First 32 bytes of the signature',
+				'Next 32 bytes of the signature',
+				'To',
+				'Transaction Index',
+				'Recovery value + 27',
+				'Value',
+				'Is Contract'
+			],
+			tooltips: [
+				'Hash of the block where this transaction was in. ',
+				'Block number where this transaction was in.',
+				'Address of the sender.',
+				'Gas provided by the sender.',
+				'Gas price provided by the sender in wei.',
+				'Hash of the transaction.',
+				'The data sent along with the transaction.',
+				'The number of transactions made by the sender prior to this one.',
+				'First part of the ECDSA signature. This is used to recover the public key.',
+				'Second part of the ECDSA signature. This is used to recover the public key.',
+				'Address of the receiver.',
+				'Integer of the transactions index position in the block.',
+				'Additional bit for ECDSA signature. This is used to recover the public key.',
+				'Value transferred in wei.',
+				'Determines if transaction is a contract.'
+			]
 		};
 	},
 

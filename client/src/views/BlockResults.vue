@@ -10,22 +10,34 @@
 						<v-card-text>
 							<v-row>
 								<v-col
-									cols="4"
+									cols="12"
+									md="4"
 									v-for="(
 										value, name, index
 									) in blockInformation"
 									:key="index"
 								>
-									<v-list-item two-line>
-										<v-list-item-content>
-											<v-list-item-title>
-												{{ name }}
-											</v-list-item-title>
-											<v-list-item-subtitle>
-												{{ value }}
-											</v-list-item-subtitle>
-										</v-list-item-content>
-									</v-list-item>
+									<v-tooltip top>
+										<template
+											v-slot:activator="{ on, attrs }"
+										>
+											<v-list-item>
+												<v-list-item-content
+													two-line
+													v-on="on"
+													v-bind="attrs"
+												>
+													<v-list-item-title>
+														{{ blockHeaders[index] }}
+													</v-list-item-title>
+													<v-list-item-subtitle>
+														{{ value }}
+													</v-list-item-subtitle>
+												</v-list-item-content>
+											</v-list-item>
+										</template>
+										<span>{{ tooltips[index] }}</span>
+									</v-tooltip>
 								</v-col>
 							</v-row>
 						</v-card-text>
@@ -199,25 +211,58 @@ export default {
 			allTransactions: [],
 			search: '',
 			headers: [
-				{ text: 'transactionIndex', value: 'transactionIndex' },
-				{ text: 'blockHash', value: 'blockHash' },
-				// { text: 'blockNumber', value: 'blockNumber' },
-				{ text: 'from', value: 'from' },
-				{ text: 'to', value: 'to' },
-				{ text: 'value', value: 'value' },
-
-				{ text: 'gas', value: 'gas' },
-				{ text: 'gasPrice', value: 'gasPrice' }
-				// { text: 'hash', value: 'hash' },
-				// { text: 'input', value: 'input' },
-				// { text: 'nonce', value: 'nonce' },
-				// { text: '1st 32 bytes', value: 'r' },
-				// { text: 'Next 32 bytes', value: 's' },
-				// { text: 'Recovery Value', value: 'v' },
+				{ text: 'Transaction Index', value: 'transactionIndex' },
+				{ text: 'From', value: 'from' },
+				{ text: 'To', value: 'to' },
+				{ text: 'Value', value: 'value' },
+				{ text: 'Gas', value: 'gas' },
+				{ text: 'Gas Price', value: 'gasPrice' }
 			],
 			snackbar: false,
 			snackbarError: '',
-			contractSwitch: false
+			contractSwitch: false,
+			blockHeaders: [
+				'Difficulty',
+				'Extra Data',
+				'Gas Limit',
+				'Gas Used',
+				'Block Hash',
+				'Logs Bloom',
+				'Miner',
+				'Mix Hash',
+				'Nonce',
+				'Block Number',
+				'Parent Hash',
+				'Receipts Root',
+				'SHA3 Uncles',
+				'Size',
+				'State Root',
+				'TimeStamp',
+				'Total Difficulty',
+				'Transactions Root',
+				'Uncles'
+			],
+			tooltips: [
+				'Integer of the difficulty for this block.',
+				'The “extra data” field of this block',
+				'The maximum gas allowed in this block.',
+				'The total used gas by all transactions in this block.',
+				'32 Bytes Hash of the block.',
+				'256 Bytes The bloom filter for the logs of the block. ',
+				'The address of the beneficiary to whom the mining rewards were given.',
+				'hash which proves combined with the nonce that a sufficient amount of computation has been carried out on this block',
+				'hash which proves combined with the mix-hash hat a sufficient amount of computation has been carried out on this block',
+				'The block number.',
+				'32 Bytes Hash of the parent block.',
+				'the hash of the root of the state trie, whereas receiptRoot is the hash of the array of receipts for a given block.',
+				'32 Bytes SHA3 of the uncles data in the block.',
+				'Integer the size of this block in bytes.',
+				'32 Bytes The root of the final state trie of the block.',
+				'The unix timestamp for when the block was collated.',
+				'Integer of the total difficulty of the chain until this block.',
+				'32 Bytes The root of the transaction trie of the block.',
+				'Array of uncle hashes.'
+			]
 		};
 	},
 
