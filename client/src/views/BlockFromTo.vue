@@ -22,7 +22,7 @@
 				<v-card class="pa-5" flat>
 					<v-card-title>
 						Information for blocks from {{ $route.params.from }} to
-						{{ $route.params.from }}.
+						{{ $route.params.to }}.
 						<v-text-field
 							class="px-2"
 							v-model="blockSearch"
@@ -59,7 +59,7 @@
 						<v-card-title>
 							Transactions for blocks from
 							{{ $route.params.from }} to
-							{{ $route.params.from }}.
+							{{ $route.params.to }}.
 							<v-text-field
 								class="px-2"
 								v-model="transactionsSearch"
