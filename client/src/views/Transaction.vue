@@ -53,7 +53,7 @@
 						</v-row>
 					</v-card-text>
 
-					<v-card v-if="hasContract" flat>
+					<v-card v-if="transaction.isContract" flat>
 						<v-card-title
 							class="display-2 font-weight-light justify-center"
 						>
@@ -95,7 +95,7 @@
 						</v-card-text>
 					</v-card>
 
-					<v-card flat>
+					<v-card flat v-if="transaction.isContract">
 						<v-card-title
 							class="text-center justify-center display-2 font-weight-light"
 						>
