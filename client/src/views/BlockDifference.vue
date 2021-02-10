@@ -245,7 +245,7 @@ export default {
 		async getBlockDifference() {
 			try {
 				const response = await axios.get(
-					`http://localhost:3001/api/v1/eth/block/diff/${this.$route.params.diff}`
+					`${process.env.VUE_APP_HOST}/api/v1/eth/block/diff/${this.$route.params.diff}`
 				);
 
 				this.blocks = response.data.blocks;

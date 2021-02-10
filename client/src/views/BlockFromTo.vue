@@ -262,7 +262,7 @@ export default {
 		async fetchBlockDifference() {
 			try {
 				const response = await axios.get(
-					`http://localhost:3001/api/v1/eth/block/distance/${this.$route.params.from}/${this.$route.params.to}`
+					`${process.env.VUE_APP_HOST}/api/v1/eth/block/distance/${this.$route.params.from}/${this.$route.params.to}`
 				);
 				this.blocks = response.data.blocks;
 				this.transactions = response.data.transactions;

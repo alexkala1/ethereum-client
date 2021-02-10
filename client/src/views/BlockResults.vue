@@ -270,7 +270,7 @@ export default {
 		async getBlockResults() {
 			try {
 				const { data } = await axios.get(
-					`http://localhost:3001/api/v1/eth/block/${this.$route.params.id}`
+					`${process.env.VUE_APP_HOST}/api/v1/eth/block/${this.$route.params.id}`
 				);
 
 				this.blockInformation = data.block;

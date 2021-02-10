@@ -133,7 +133,7 @@ export default {
 	methods: {
 		async getBlockCount() {
 			const { data } = await axios.get(
-				'http://localhost:3001/api/v1/eth/blockCount'
+				`${process.env.VUE_APP_HOST}/api/v1/eth/blockCount`
 			);
 
 			this.blockCount = data;
