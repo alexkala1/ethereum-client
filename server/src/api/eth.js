@@ -37,26 +37,30 @@ router.get('/block/diff/:diff', async (req, res) => {
 	let transactions = []
 	let blockNumber = await web3.eth.getBlockNumber()
 
-	for (let i = 0; i < req.params.diff; i++) {
-		let block = await web3.eth.getBlock(blockNumber - i, true)
+	try {
+		for (let i = 0; i < req.params.diff; i++) {
+			let block = await web3.eth.getBlock(blockNumber - i, true)
 
-		block.transactions.forEach(async transaction => {
-			if (transaction.to !== null) {
-				let code = await web3.eth.getCode(transaction.to)
+			block.transactions.forEach(async transaction => {
+				if (transaction.to !== null) {
+					let code = await web3.eth.getCode(transaction.to)
 
-				if (code !== "0x")
-					transaction.isContract = 1
-			}
+					if (code !== "0x")
+						transaction.isContract = 1
+				}
 
-			transactions.push(transaction)
+				transactions.push(transaction)
 
-		})
-		delete block.transactions
+			})
+			delete block.transactions
 
-		blocks.push(block)
+			blocks.push(block)
+		}
+
+		return res.json({ blocks, transactions })
+	} catch (error) {
+		throw new Error(error)
 	}
-
-	return res.json({ blocks, transactions })
 })
 
 /**
@@ -97,9 +101,13 @@ router.get('/block/distance/:from/:to', async (req, res) => {
  * Gets current block count
  */
 router.get('/blockCount', async (req, res) => {
-	const blockCount = await web3.eth.getBlockNumber()
+	try {
+		const blockCount = await web3.eth.getBlockNumber()
 
-	return res.json(blockCount)
+		return res.json(blockCount)
+	} catch (error) {
+		throw new Error(error)
+	}
 })
 
 /**
@@ -107,13 +115,17 @@ router.get('/blockCount', async (req, res) => {
  * returns the bytecode as well.
  */
 router.get('/transaction/:id/', async (req, res) => {
-	let transaction = await web3.eth.getTransaction(req.params.id)
-	const code = await web3.eth.getCode(transaction.to)
+	try {
+		let transaction = await web3.eth.getTransaction(req.params.id)
+		const code = await web3.eth.getCode(transaction.to)
 
-	if (code !== "0x")
-		transaction.isContract = 1
+		if (code !== "0x")
+			transaction.isContract = 1
 
-	return res.json({ transaction, code })
+		return res.json({ transaction, code })
+	} catch (error) {
+		throw new Error(error)
+	}
 })
 
 
@@ -121,25 +133,28 @@ router.get('/transaction/:id/', async (req, res) => {
  * Decompiles the contract and returns its code and events
  */
 router.get('/transaction/:id/decompile', async (req, res) => {
-	const code = await web3.eth.getCode(req.params.id)
+	try {
+		const code = await web3.eth.getCode(req.params.id)
 
-	if (code !== "0x") {
-		try {
-			const evm = new EVM(code)
-			const functions = evm.getFunctions()
-			const events = evm.getEvents()
-			const decompiled = evm.decompile()
+		if (code !== "0x") {
+			try {
+				const evm = new EVM(code)
+				const functions = evm.getFunctions()
+				const events = evm.getEvents()
+				const decompiled = evm.decompile()
 
-			return res.json({ functions, events, decompiled })
+				return res.json({ functions, events, decompiled })
 
-		} catch (error) {
-			return res.status(404).json(error)
+			} catch (error) {
+				return res.status(404).json(error)
+			}
+
+		} else {
+			return res.json({ message: "Not a contract" })
 		}
-
-	} else {
-		return res.json({ message: "Not a contract" })
+	} catch (error) {
+		throw new Error(error)
 	}
-
 })
 
 module.exports = router;
