@@ -35,8 +35,6 @@
 					<v-data-table
 						:loading="loading"
 						loading-text="Loading... Please wait"
-						show-expand
-						single-expand
 						item-key="hash"
 						:headers="blockHeaders"
 						:items="blocks"
@@ -58,8 +56,7 @@
 					<v-card-text>
 						<v-card-title>
 							Transactions for blocks from
-							{{ $route.params.from }} to
-							{{ $route.params.to }}.
+							{{ $route.params.from }} to {{ $route.params.to }}.
 							<v-text-field
 								class="px-2"
 								v-model="transactionsSearch"
@@ -203,11 +200,7 @@
 			{{ snackbarMessage }}
 
 			<template v-slot:action="{ attrs }">
-				<v-btn
-					text
-					v-bind="attrs"
-					@click="snackbar = false"
-				>
+				<v-btn text v-bind="attrs" @click="snackbar = false">
 					Close
 				</v-btn>
 			</template>
@@ -226,42 +219,35 @@ export default {
 			allTransactions: [],
 			contractSwitch: false,
 			transactionHeaders: [
-				{ text: 'transactionIndex', value: 'transactionIndex' },
-				{ text: 'blockHash', value: 'blockHash' },
-				{ text: 'blockNumber', value: 'blockNumber' },
-				{ text: 'from', value: 'from' },
-				{ text: 'to', value: 'to' },
-				{ text: 'value', value: 'value' },
-
-				{ text: 'gas', value: 'gas' },
-				{ text: 'gasPrice', value: 'gasPrice' }
-				// { text: 'hash', value: 'hash' },
-				// { text: 'input', value: 'input' },
-				// { text: 'nonce', value: 'nonce' },
-				// { text: '1st 32 bytes', value: 'r' },
-				// { text: 'Next 32 bytes', value: 's' },
-				// { text: 'Recovery Value', value: 'v' },
+				{ text: 'Block Hash', value: 'blockHash' },
+				{ text: 'Block Number', value: 'blockNumber' },
+				{ text: 'Transaction Index', value: 'transactionIndex' },
+				{ text: 'From', value: 'from' },
+				{ text: 'To', value: 'to' },
+				{ text: 'Value', value: 'value' },
+				{ text: 'Gas', value: 'gas' },
+				{ text: 'Gas Price', value: 'gasPrice' }
 			],
 			blockHeaders: [
-				{ text: 'difficulty', value: 'difficulty' },
-				{ text: 'extraData', value: 'extraData' },
-				{ text: 'gasLimit', value: 'gasLimit' },
-				{ text: 'gasUsed', value: 'gasUsed' },
-				{ text: 'hash', value: 'hash' },
-				{ text: 'logsBloom', value: 'logsBloom' },
-				{ text: 'miner', value: 'miner' },
-				{ text: 'mixHash', value: 'mixHash' },
-				{ text: 'nonce', value: 'nonce' },
-				{ text: 'number', value: 'number' },
-				{ text: 'parentHash', value: 'parentHash' },
-				{ text: 'receiptsRoot', value: 'receiptsRoot' },
-				{ text: 'sha3Uncles', value: 'sha3Uncles' },
-				{ text: 'size', value: 'size' },
-				{ text: 'stateRoot', value: 'stateRoot' },
-				{ text: 'timestamp', value: 'timestamp' },
-				{ text: 'totalDifficulty', value: 'totalDifficulty' },
-				{ text: 'transactionsRoot', value: 'transactionsRoot' },
-				{ text: 'uncles', value: 'uncles' }
+				{ text: 'Difficulty', value: 'difficulty' },
+				{ text: 'Extra Data', value: 'extraData' },
+				{ text: 'Gas Limit', value: 'gasLimit' },
+				{ text: 'Gas Used', value: 'gasUsed' },
+				{ text: 'Hash', value: 'hash' },
+				{ text: 'Logs Bloom', value: 'logsBloom' },
+				{ text: 'Miner', value: 'miner' },
+				{ text: 'Mix Hash', value: 'mixHash' },
+				{ text: 'Nonce', value: 'nonce' },
+				{ text: 'Number', value: 'number' },
+				{ text: 'Parent Hash', value: 'parentHash' },
+				{ text: 'Receipts Root', value: 'receiptsRoot' },
+				{ text: 'SHA3 Uncles', value: 'sha3Uncles' },
+				{ text: 'Size', value: 'size' },
+				{ text: 'State Root', value: 'stateRoot' },
+				{ text: 'Timestamp', value: 'timestamp' },
+				{ text: 'Total Difficulty', value: 'totalDifficulty' },
+				{ text: 'Transactions Root', value: 'transactionsRoot' },
+				{ text: 'Uncles', value: 'uncles' }
 			],
 			loading: true,
 			blocksSearch: '',
