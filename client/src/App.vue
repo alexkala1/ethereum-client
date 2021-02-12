@@ -1,8 +1,12 @@
 <template>
 	<v-app>
-		<v-main pa-0>
+		<v-main>
 			<v-container fluid fill-height>
-				<router-view></router-view>
+				<v-row justify="center">
+					<v-col cols="12">
+						<router-view></router-view>
+					</v-col>
+				</v-row>
 			</v-container>
 		</v-main>
 		<Footer />

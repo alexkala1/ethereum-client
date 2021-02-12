@@ -39,7 +39,11 @@
 										>
 											<v-list-item-content>
 												<v-list-item-title>
-													{{ transactionHeaders[index] }}
+													{{
+														transactionHeaders[
+															index
+														]
+													}}
 												</v-list-item-title>
 												<v-list-item-subtitle>
 													{{ value }}
@@ -52,6 +56,10 @@
 							</v-col>
 						</v-row>
 					</v-card-text>
+					<v-divider
+						class="my-5"
+						v-if="transaction.isContract"
+					></v-divider>
 
 					<v-card v-if="transaction.isContract" flat>
 						<v-card-title
@@ -74,7 +82,6 @@
 										Full Solidity Code
 									</h1>
 									<v-textarea
-										background-color="grey lighten-2"
 										:value="decompiledContract"
 										rows="20"
 										@click="
@@ -86,6 +93,10 @@
 							</v-row>
 						</v-card-text>
 					</v-card>
+					<v-divider
+						class="my-5"
+						v-if="transaction.isContract"
+					></v-divider>
 					<v-card v-if="hasError">
 						<v-card-title class="justify-center">
 							There was an error
@@ -239,7 +250,7 @@ export default {
 			document.body.removeChild(dummy);
 
 			this.snackbar = true;
-			this.color = 'success';
+			this.color = 'green';
 			this.text = 'Copied to clipboard';
 		}
 	},

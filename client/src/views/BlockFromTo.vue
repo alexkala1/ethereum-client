@@ -2,7 +2,7 @@
 	<v-container>
 		<v-row align="center" justify="center">
 			<v-col cols="12" v-if="loading">
-				<v-card flat>
+				<v-card flat color="#121212">
 					<v-card-title
 						class="justify-center font-weight-light display-1"
 					>
@@ -43,14 +43,7 @@
 					>
 					</v-data-table>
 				</v-card>
-				<div class="text-center py-5">
-					<v-btn
-						@click="$vuetify.goTo('.transactions', 500, 300)"
-						rounded
-						light
-						>Check transactions</v-btn
-					>
-				</div>
+				<v-divider class="my-5"></v-divider>
 
 				<v-card class="pa-5 transactions" flat>
 					<v-card-text>

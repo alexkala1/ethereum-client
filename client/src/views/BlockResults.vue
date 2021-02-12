@@ -1,9 +1,9 @@
 <template>
-	<v-container fluid pa-0>
+	<v-container>
 		<v-row align="center" justify="center">
 			<v-col cols="12">
 				<v-card elevation="6">
-					<v-card>
+					<v-card flat>
 						<v-card-title>
 							Information for {{ $route.params.id }} block
 						</v-card-title>
@@ -28,7 +28,9 @@
 													v-bind="attrs"
 												>
 													<v-list-item-title>
-														{{ blockHeaders[index] }}
+														{{
+															blockHeaders[index]
+														}}
 													</v-list-item-title>
 													<v-list-item-subtitle>
 														{{ value }}
@@ -42,7 +44,8 @@
 							</v-row>
 						</v-card-text>
 					</v-card>
-					<v-card>
+					<v-divider class="my-5"></v-divider>
+					<v-card flat>
 						<v-card-title>
 							Transactions for block {{ $route.params.id }}
 							<v-text-field
@@ -79,9 +82,9 @@
 													<v-list-item-title>
 														Input:
 													</v-list-item-title>
-													<div class="contract">
+													<v-list-item-subtitle>
 														{{ item.input }}
-													</div>
+													</v-list-item-subtitle>
 												</v-list-item-content>
 											</v-list-item>
 										</v-col>
@@ -108,11 +111,9 @@
 															<v-list-item-title>
 																Hash:
 															</v-list-item-title>
-															<div
-																class="contract"
-															>
+															<v-list-item-subtitle>
 																{{ item.hash }}
-															</div>
+															</v-list-item-subtitle>
 														</v-list-item-content>
 													</v-list-item>
 												</template>
@@ -302,10 +303,3 @@ export default {
 	}
 };
 </script>
- <style>
-.contract {
-	word-break: break-word;
-	color: rgba(0, 0, 0, 0.6);
-	line-height: 1.5 !important;
-}
-</style>
