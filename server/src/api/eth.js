@@ -11,22 +11,27 @@ const web3 = new Web3(process.env.INFURA_SECRET);
  * occasion of a transaction being a contract.
  */
 router.get('/block/:block', async (req, res) => {
-	let block = await web3.eth.getBlock(req.params.block, true)
+	try {
+		let block = await web3.eth.getBlock(req.params.block, true)
 
-	let transactions = await Promise.all(block.transactions.map(async transaction => {
-		if (transaction.to !== null) {
-			let code = await web3.eth.getCode(transaction.to)
+		let transactions = await Promise.all(block.transactions.map(async transaction => {
+			if (transaction.to !== null) {
+				let code = await web3.eth.getCode(transaction.to)
 
-			if (code !== "0x")
-				transaction.isContract = 1
-		}
+				if (code !== "0x")
+					transaction.isContract = 1
+			}
 
-		return await transaction
-	}))
+			return await transaction
+		}))
 
-	delete block.transactions
+		delete block.transactions
 
-	return res.json({ block, transactions })
+		return res.json({ block, transactions })
+	} catch (error) {
+		throw new Error(error)
+	}
+
 });
 
 /**
