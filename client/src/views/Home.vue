@@ -59,7 +59,7 @@
 						</h2>
 						<v-row justify="center">
 							<v-col cols="12" md="6">
-								<v-tabs v-model="tab" align-with-title centered>
+								<v-tabs v-model="tab" align-with-title centered class="d-flex justify-center">
 									<v-tab> Difference from latest </v-tab>
 									<v-tab> Difference between blocks </v-tab>
 								</v-tabs>
