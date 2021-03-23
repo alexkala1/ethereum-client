@@ -3,7 +3,7 @@
 		<v-row align="center" justify="center" no-gutters class="pa-0">
 			<v-col cols="12" class="pa-0">
 				<v-parallax dark src="../assets/ethereum.jpg" height="700">
-					<v-row align="center" justify="start">
+					<v-row align="center" justify="center">
 						<v-col cols="12" md="6">
 							<h1
 								class="display-2 text-center font-weight-thin mb-4"
@@ -18,6 +18,8 @@
 							<div class="pa-5">
 								<v-text-field
 									outlined
+									dark
+									filled
 									v-model="search"
 									append-icon="mdi-magnify"
 									label="Search a block number"
